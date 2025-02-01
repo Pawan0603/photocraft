@@ -3,6 +3,7 @@
 import { Camera, Wand2, Sparkles, Image as ImageIcon, ArrowRight, Layers, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -30,10 +31,12 @@ export default function Home() {
               Perfect your photos in seconds, not hours.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/photoshop">
               <Button size="lg" className="gap-2">
                 Start Editing Now
                 <ArrowRight className="w-4 h-4" />
               </Button>
+              </Link>
               <Button size="lg" variant="secondary">
                 View Examples
               </Button>

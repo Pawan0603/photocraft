@@ -32,7 +32,7 @@ const Page = () => {
                     // blur="100"
                     // fillBackground
                     // remove={{
-                    //     prompt: 'remove clothes',
+                    //     prompt: 'remove trees',
                     //     removeShadow: true
                     //   }}
                     // enhance
@@ -42,8 +42,6 @@ const Page = () => {
                     // restore
                     // blurFaces="1000"
                     // replace={['apple', 'banana']}
-
-                    
                 />
             }
             {image &&

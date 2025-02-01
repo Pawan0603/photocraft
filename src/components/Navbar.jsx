@@ -35,7 +35,7 @@ export function Navbar() {
             <div className="ml-2">
               <ThemeToggle />
             </div>
-            <Button>Get Started</Button>
+            <Link href={"/auth/login"}><Button>Get Started</Button></Link>
           </div>
 
           {/* Mobile menu button */}
