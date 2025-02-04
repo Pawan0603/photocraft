@@ -1,6 +1,6 @@
 'use client';
 import Background from '@/components/editfunctionSlider/Background';
-import ClothChenger from '@/components/editfunctionSlider/ClothChenger';
+import Outfit from '@/components/editfunctionSlider/Outfit';
 import { Button } from '@/components/ui/button';
 import { File, Pen, Shirt, Images, CircleDashed, Crop, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary';
@@ -16,7 +16,7 @@ const Page = () => {
 
   const [bgremove, setBgremove] = useState(null);
   const [background, setBackground] = useState(null);
-  const [cloth, setCloth] = useState({ to: "cloth", from: "t-shirt" });
+  const [outfit, setOutfit] = useState(null);
 
 
   const removeBackground = (color) => {
@@ -30,6 +30,16 @@ const Page = () => {
     setEffectLoading(true);
     setBackground(null);
     setBgremove(null);
+  }
+
+  const outfitChange = (cloth) => {
+    setEffectLoading(true);
+    setOutfit(['cloth', cloth]);
+  }
+
+  const outfitRestore = () => {
+    setEffectLoading(true);
+    setOutfit(null);
   }
 
   return (
@@ -55,7 +65,7 @@ const Page = () => {
 
         {showEffectCard && <div className='flex flex-col h-full w-80 border-r relative' >
           <button onClick={()=>{setShowEffectCard(false)}} className="w-fit p-1 absolute right-3 bg-transparent border hover:border-black hover:dark:border-white rounded-md dark:text-white"><X size={18}/></button>
-          {effectCard === "Cloth" && <ClothChenger />}
+          {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} />}
           {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground}/>}
         </div>}
 
@@ -84,6 +94,9 @@ const Page = () => {
             // ============ background remove =================
             extract={bgremove}
             background={background}
+
+            // ============ Outfit =================
+            replace={outfit}
 
             onLoad={(e) => {
               setEffectLoading(false);

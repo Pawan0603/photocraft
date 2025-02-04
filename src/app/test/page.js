@@ -32,7 +32,7 @@ const Page = () => {
                     // blur="100"
                     // fillBackground
                     // remove={{
-                    //     prompt: 'remove trees',
+                    //     prompt: 'text',
                     //     removeShadow: true
                     //   }}
                     // enhance
