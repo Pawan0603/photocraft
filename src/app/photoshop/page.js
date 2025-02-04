@@ -44,7 +44,7 @@ const Page = () => {
 
   return (
     <div className='flex justify-center items-center w-screen h-[calc(100vh-65.5px)] bg-gradient-to-br from-primary/10 via-background to-background overflow-hidden'>
-      <div className="bg-white dark:bg-[#18181b] p-4 pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-row justify-between items-center">
+      <div className="bg-white dark:bg-[#18181b] p-4 pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-row justify-between items-center overflow-hidden">
         <div className='flex flex-col justify-center items-center h-full w-16 gap-4 '>
           {[
             { Name: "Bg", Icon: Images, EffectCard: "Background" },

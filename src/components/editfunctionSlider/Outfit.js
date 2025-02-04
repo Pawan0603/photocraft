@@ -33,7 +33,7 @@ function Male({ outfitChange, outfitRestore }) {
   ]
 
   return (
-    <ScrollArea className="flex flex-row justify-between w-full h-full mt-3">
+    <ScrollArea className="flex flex-row justify-between w-full h-[calc(100%-80px)] mt-3">
       <div className="flex flex-row justify-between w-full flex-wrap h-full gap-3">
         {ClothType.map((cloth, index) => (
             <button key={index} onClick={() => { outfitChange(cloth.Name) }} className=" w-24 h-24 border rounded-md hover:shadow-md">
@@ -78,7 +78,7 @@ function Female({ outfitChange, outfitRestore }) {
     { Name: "High-Waisted Bikini" },
   ]
   return (
-    <ScrollArea className="flex flex-row justify-between w-full h-full mt-3">
+    <ScrollArea className="flex flex-row justify-between w-full h-[calc(100%-80px)] mt-3">
       <div className="flex flex-row justify-between w-full flex-wrap h-full gap-3">
         {ClothType.map((cloth, index) => (
           <button key={index} onClick={() => { outfitChange(cloth.Name) }} className=" w-24 h-24 border rounded-md hover:shadow-md">
