@@ -1,9 +1,10 @@
 'use client';
+import AspectRatio from '@/components/editfunctionSlider/AspectRatio';
 import Background from '@/components/editfunctionSlider/Background';
 import ColorCorrection from '@/components/editfunctionSlider/ColorCorrection';
 import Outfit from '@/components/editfunctionSlider/Outfit';
 import { Button } from '@/components/ui/button';
-import { File, Pen, Shirt, Images, CircleDashed, Crop, X, Palette } from 'lucide-react'
+import { File, Pen, Shirt, Images, CircleDashed, Crop, X, Palette, Proportions } from 'lucide-react'
 import { CldImage } from 'next-cloudinary';
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -19,6 +20,8 @@ const Page = () => {
   const [background, setBackground] = useState(null);
   const [outfit, setOutfit] = useState(null);
   const [colorCorrection, setColorCorrection] = useState({ brightness: 0, contrast: 0, grayscale: false, gamma: 0, hue: 0, saturation: 0, vibrance: 0, sepia: 0, tint: null, duotone: null });
+  const [aspectRatio, setAspectRatio] = useState(null); // Aspect Ratio Managing
+  const [fillBackground, setFillBackground] = useState(false); // Aspect Ratio Managing
 
   const removeBackground = (color) => {
     setEffectLoading(true);
@@ -80,7 +83,13 @@ const Page = () => {
         ...prevState,
         sepia: value,
       }));
-    } 
+    }
+  }
+
+  const handleAspectRatio = (FillBackground, AspectRatio) => {
+    setEffectLoading(true);
+    setFillBackground(FillBackground); // boolian
+    setAspectRatio(AspectRatio); // number string eg. "1:2"
   }
 
   return (
@@ -93,7 +102,7 @@ const Page = () => {
             { Name: "Blur", Icon: CircleDashed, EffectCard: "BlurCard" },
             { Name: "Crop", Icon: Crop, EffectCard: "CropCard" },
             { Name: "Color", Icon: Palette, EffectCard: "ColorCorrection" },
-            { Name: "Outfit", Icon: Shirt, EffectCard: "Cloth" },
+            { Name: "Aspect Ratio", Icon: Proportions, EffectCard: "AspectRatio" },
           ].map((tool, index) => (
             <button onClick={() => { setEffectCard(tool.EffectCard); setShowEffectCard(true); }} key={index} className='flex flex-col justify-center items-center group'>
               <span className='flex flex-col items-center justify-center rounded-sm p-1 group-hover:bg-white group-hover:shadow-lg dark:group-hover:bg-[#27272a] dark:group-hover:shadow-lg'>
@@ -109,6 +118,7 @@ const Page = () => {
           {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} />}
           {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground} />}
           {effectCard === "ColorCorrection" && <ColorCorrection handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} />}
+          {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio}/>}
         </div>}
 
         <div className='flex flex-col justify-center items-center h-full w-full '>
@@ -152,6 +162,15 @@ const Page = () => {
             sepia={colorCorrection.sepia}      // 0 to 100
             // tint={colorCorrection.tint}    // [color, amount] e.g., ['red', 50]
             duotone={colorCorrection.duotone} // [highlightColor, shadowColor] e.g., ['#ff0000', '#0000ff']
+
+            // =================== AspectRatio ===================
+            fillBackground={fillBackground}
+            aspectRatio={aspectRatio}
+            // aspectRatio="1:1" // Square
+            // aspectRatio="4:3" // Standard
+            // aspectRatio="16:9" // Widescreen
+            // aspectRatio="3:2" // Classic photo
+            // aspectRatio="21:9" // Ultra widescreen
 
 
             onLoad={(e) => {
