@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Navbar } from "@/components/navbar";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast"
 
 export default function SignupPage() {
+  const { toast } = useToast();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,11 +19,26 @@ export default function SignupPage() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement signup logic
+    setLoading(true);
     console.log("Signup submitted:", formData);
+    try {
+      let res = await axios.post(`${process.env.NEXT_PUBLIC_HOST_URL}/api/signup`, formData);
+      console.log("Signup response:", res.data);
+      if (res.data.success === true) {
+        toast({
+          description: "Accound has been created.",
+        })
+        router.push("/auth/login");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -96,7 +113,12 @@ export default function SignupPage() {
             </div>
 
             <Button type="submit" className="w-full">
-              Create Account
+              {loading === false ?
+                "Create Account" :
+                <>
+                  <div className="w-4 h-4 border-l-2 border-t-2 border-white dark:border-black rounded-full animate-spin" />
+                  Creating Account
+                </>}
             </Button>
           </form>
 

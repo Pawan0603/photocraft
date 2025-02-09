@@ -166,11 +166,6 @@ const Page = () => {
             // =================== AspectRatio ===================
             fillBackground={fillBackground}
             aspectRatio={aspectRatio}
-            // aspectRatio="1:1" // Square
-            // aspectRatio="4:3" // Standard
-            // aspectRatio="16:9" // Widescreen
-            // aspectRatio="3:2" // Classic photo
-            // aspectRatio="21:9" // Ultra widescreen
 
 
             onLoad={(e) => {

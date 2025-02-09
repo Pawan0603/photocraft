@@ -41,7 +41,8 @@ const Page = () => {
                     // zoompan="loop"
                     // restore
                     // blurFaces="1000"
-                    // replace={['apple', 'banana']}
+                    replace={['cloth', 'hoodie']}
+                    // quality={20}
                 />
             }
             {image &&
