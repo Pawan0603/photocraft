@@ -10,7 +10,7 @@ export async function POST(request) {
         console.log(name, email, password);
         const user = await UserModel.findOne({email: email});
         if(user) {
-            return NextResponse.json({ success: false, message: "User already exists" },{status: 400});
+            return NextResponse.json({ success: false, message: "User already exists" },{status: 200});
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);

@@ -33,9 +33,18 @@ export default function SignupPage() {
           description: "Accound has been created.",
         })
         router.push("/auth/login");
+      } else {
+        toast({
+          variant: "destructive",
+          description: res.data.message,
+        })
       }
     } catch (error) {
       console.error("Signup error:", error);
+      toast({
+        variant: "destructive",
+        description: error.message,
+      })
     } finally {
       setLoading(false);
     }
