@@ -7,11 +7,14 @@ import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Navbar } from "@/components/navbar";
+import { useToast } from "@/hooks/use-toast"
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,8 +22,31 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log("Login submitted:", formData);
+    setLoading(true);
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_HOST_URL}/api/login`, formData);
+      if(res.data.success) {
+        console.log("Login response:", res.data);
+        localStorage.setItem("token", res.data.token);
+        toast({
+          description: "Logged in successfully",
+        })
+        router.push("/");
+      } else {
+        toast({
+          variant: "destructive",
+          description: res.data.message,
+        })
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast({
+        variant: "destructive",
+        description: error.message,
+      })
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,7 +105,12 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" className="w-full">
-              Sign In
+              {loading === false ?
+                "Log In" :
+                <>
+                  <div className="w-4 h-4 border-l-2 border-t-2 border-white dark:border-black rounded-full animate-spin" />
+                  Login...
+                </>}
             </Button>
           </form>
 
