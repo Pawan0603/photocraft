@@ -47,7 +47,7 @@ export default function Home() {
 
       {/* Rest of the component remains the same */}
       {/* Features Section */}
-      <div className="py-24 bg-muted/50">
+      <div id="features" className="py-24 bg-muted/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Powerful Features</h2>

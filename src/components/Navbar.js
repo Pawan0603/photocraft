@@ -1,13 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
+import DropUserMenu from "./DropUserMenu";
+import DropDownMenuMobile from "./DropDownMenuMobile";
+
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && token === null) {
+      setToken(window.localStorage.getItem('token'));
+    }
+  }, []);
+
+  const Logout = () => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('token');
+      setToken(null);
+    }
+  }
 
   return (
     <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b border-border">
@@ -23,7 +40,7 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/features" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
               Features
             </Link>
             <Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -35,7 +52,8 @@ export function Navbar() {
             <div className="ml-2">
               <ThemeToggle />
             </div>
-            <Link href={"/auth/login"}><Button>Get Started</Button></Link>
+            {token === null ? <Link href={"/auth/login"}><Button>Get Started</Button></Link> :
+            <DropUserMenu Logout={Logout}/>}
           </div>
 
           {/* Mobile menu button */}
@@ -61,7 +79,7 @@ export function Navbar() {
           <div className="md:hidden border-t border-border">
             <div className="space-y-1 pt-2 pb-3">
               <Link
-                href="/features"
+                href="#features"
                 className="block px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md"
                 onClick={() => setIsOpen(false)}
               >
@@ -82,7 +100,9 @@ export function Navbar() {
                 Examples
               </Link>
               <div className="px-3 py-2">
-                <Button className="w-full">Get Started</Button>
+                {token === null ? <Link href={'/auth/login'}><Button className="w-full">Get Started</Button></Link> :
+                <DropDownMenuMobile Logout={Logout}/>}
+
               </div>
             </div>
           </div>
