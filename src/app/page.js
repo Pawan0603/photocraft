@@ -31,7 +31,7 @@ export default function Home() {
               Perfect your photos in seconds, not hours.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/photoshop">
+              <Link href="/photoCraft">
               <Button size="lg" className="gap-2">
                 Start Editing Now
                 <ArrowRight className="w-4 h-4" />
