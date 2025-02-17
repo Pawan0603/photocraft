@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button';
 import { File, Pen, Shirt, Images, CircleDashed, Crop, X, Palette, Proportions } from 'lucide-react'
 import { CldImage } from 'next-cloudinary';
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Page = () => {
-  const [image, setImage] = useState("rfrxgvkmuqwdrcsfjge4");
+const Page = ({ params }) => {
+  const [image, setImage] = useState(null);
 
   const [showEffectCard, setShowEffectCard] = useState(false);
   const [effectCard, setEffectCard] = useState(null);
@@ -22,6 +22,15 @@ const Page = () => {
   const [colorCorrection, setColorCorrection] = useState({ brightness: 0, contrast: 0, grayscale: false, gamma: 0, hue: 0, saturation: 0, vibrance: 0, sepia: 0, tint: null, duotone: null });
   const [aspectRatio, setAspectRatio] = useState(null); // Aspect Ratio Managing
   const [fillBackground, setFillBackground] = useState(false); // Aspect Ratio Managing
+
+  const getImageFromUrk = async () => {
+    let id = (await params).slug;
+    setImage(id);
+  }
+
+  useEffect(() => {
+    getImageFromUrk();
+  }, []);
 
   const removeBackground = (color) => {
     setEffectLoading(true);
@@ -118,11 +127,11 @@ const Page = () => {
           {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} />}
           {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground} />}
           {effectCard === "ColorCorrection" && <ColorCorrection handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} />}
-          {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio}/>}
+          {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} />}
         </div>}
 
         <div className='flex flex-col justify-center items-center h-full w-full '>
-          <CldImage
+          {image !== null && <CldImage
             width="500"
             height="500"
             src={image}
@@ -173,7 +182,7 @@ const Page = () => {
             }}
 
             className={`h-auto max-h-full w-auto max-w-full ${effectLoading === true ? "animate-pulse" : ""}`}
-          />
+          />}
         </div>
       </div>
     </div>

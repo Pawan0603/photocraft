@@ -94,7 +94,7 @@ function Page() {
                                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                     {imgData.map((img, index) => (
                                         <Card onClick={()=>{
-                                            router.push(`/photoshop?imageId=${img.public_id}`)
+                                            router.push(`/photoshop/${img.public_id}`)
                                         }} key={index} className="p-4 h-48 relative flex items-center justify-center hover:shadow-lg hover:cursor-pointer">
                                             <FileImage className='text-neutral-400 dark:text-neutral-500' size={40} />
                                             <span className='absolute bottom-3 left-4'>
