@@ -40,7 +40,7 @@ function Page() {
         try {
             let data = { imageId: imageId, token };
             let res = await axios.post('/api/upload', data);            
-            router.push(`/photoshop?imageId=${imageId}`);
+            router.push(`/photoshop/${imageId}`);
         } catch (error) {
             console.log(error);
             
