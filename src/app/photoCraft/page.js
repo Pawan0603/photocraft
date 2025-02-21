@@ -1,6 +1,7 @@
 'use client';
 import LoadingRing from '@/components/loader/LoadingRing';
 import { Card } from '@/components/ui/card'
+import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { CirclePlus, FileImage } from 'lucide-react'
 import { CldUploadWidget } from 'next-cloudinary';
@@ -9,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 
 function Page() {
     const router = useRouter();
+    const { toast } = useToast();
     const [imgData, setImgData] = useState(null);
     const [img, setImg] = useState(null);
     const [token, setToken] = useState(null);
@@ -19,7 +21,15 @@ function Page() {
             let res = await axios.post('/api/getImages', { token: TOKEN });
             setImgData(res.data.data);
         } catch (error) {
-            console.log(error);
+            toast({
+                variant: "destructive",
+                description: error.response.data.message,
+            })
+            if(error.response.data.message === "jwt expired"){
+                if (typeof window === 'undefined') return;
+                localStorage.removeItem('token');
+                router.push('/auth/login');
+            }
         }
     }
 

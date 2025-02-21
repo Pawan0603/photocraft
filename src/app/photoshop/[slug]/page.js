@@ -3,14 +3,17 @@ import AspectRatio from '@/components/editfunctionSlider/AspectRatio';
 import Background from '@/components/editfunctionSlider/Background';
 import ColorCorrection from '@/components/editfunctionSlider/ColorCorrection';
 import Outfit from '@/components/editfunctionSlider/Outfit';
+import ImageCardLoading from '@/components/loader/ThreedotLoding';
 import { Button } from '@/components/ui/button';
-import { File, Pen, Shirt, Images, CircleDashed, Crop, X, Palette, Proportions } from 'lucide-react'
+import { File, Pen, Shirt, Images, CircleDashed, Crop, X, Palette, Proportions, Download } from 'lucide-react'
 import { CldImage } from 'next-cloudinary';
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 const Page = ({ params }) => {
   const [image, setImage] = useState(null);
+
+  const [imageUrl, setImageUrl] = useState(null);
 
   const [showEffectCard, setShowEffectCard] = useState(false);
   const [effectCard, setEffectCard] = useState(null);
@@ -101,9 +104,34 @@ const Page = ({ params }) => {
     setAspectRatio(AspectRatio); // number string eg. "1:2"
   }
 
+  const DownloadImage = async () => {
+    if (!imageUrl) {
+      console.error("No image URL available for download.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+  
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "image.png"; // Ensure PNG format for transparency
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  
+      // Clean up blob URL
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
+  }
+
   return (
     <div className='flex justify-center items-center w-screen h-[calc(100vh-65.5px)] bg-gradient-to-br from-primary/10 via-background to-background overflow-hidden'>
-      <div className="bg-white dark:bg-[#18181b] p-4 pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-row justify-between items-center overflow-hidden">
+      <div className="bg-white dark:bg-[#18181b] p-4 pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-row justify-between items-center overflow-hidden relative">
         <div className='flex flex-col justify-center items-center h-full w-16 gap-4 '>
           {[
             { Name: "Bg", Icon: Images, EffectCard: "Background" },
@@ -131,6 +159,7 @@ const Page = ({ params }) => {
         </div>}
 
         <div className='flex flex-col justify-center items-center h-full w-full '>
+          {image === null && <ImageCardLoading />}
           {image !== null && <CldImage
             width="500"
             height="500"
@@ -179,11 +208,14 @@ const Page = ({ params }) => {
 
             onLoad={(e) => {
               setEffectLoading(false);
+              setImageUrl(e.target.src);
             }}
 
             className={`h-auto max-h-full w-auto max-w-full ${effectLoading === true ? "animate-pulse" : ""}`}
           />}
         </div>
+
+        <Button variant="outline" onClick={DownloadImage} className='absolute top-4 right-4'><Download /></Button>
       </div>
     </div>
   )
