@@ -1,16 +1,23 @@
 'use client';
 import AspectRatio from '@/components/editfunctionSlider/AspectRatio';
+import AspectRatioMobile from '@/components/editfunctionSlider/AspectRatioMobile';
 import Background from '@/components/editfunctionSlider/Background';
+import BackgroundMobile from '@/components/editfunctionSlider/BackgroundMobile';
 import ColorCorrection from '@/components/editfunctionSlider/ColorCorrection';
+import ColorCorrectionMobile from '@/components/editfunctionSlider/ColorCorrectionMobile';
 import Outfit from '@/components/editfunctionSlider/Outfit';
+import OutfitMobile from '@/components/editfunctionSlider/OutfitMobile';
 import ImageCardLoading from '@/components/loader/ThreedotLoding';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import { File, Pen, Shirt, Images, CircleDashed, Crop, X, Palette, Proportions, Download } from 'lucide-react'
 import { CldImage } from 'next-cloudinary';
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
 const Page = ({ params }) => {
+  const { toast } = useToast();
+
   const [image, setImage] = useState(null);
 
   const [imageUrl, setImageUrl] = useState(null);
@@ -109,19 +116,19 @@ const Page = ({ params }) => {
       console.error("No image URL available for download.");
       return;
     }
-  
+
     try {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
-  
+
       const link = document.createElement("a");
       link.href = blobUrl;
       link.download = "image.png"; // Ensure PNG format for transparency
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-  
+
       // Clean up blob URL
       URL.revokeObjectURL(blobUrl);
     } catch (error) {
@@ -131,8 +138,8 @@ const Page = ({ params }) => {
 
   return (
     <div className='flex justify-center items-center w-screen h-[calc(100vh-65.5px)] bg-gradient-to-br from-primary/10 via-background to-background overflow-hidden'>
-      <div className="bg-white dark:bg-[#18181b] p-4 pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-row justify-between items-center overflow-hidden relative">
-        <div className='flex flex-col justify-center items-center h-full w-16 gap-4 '>
+      <div className="bg-white dark:bg-[#18181b] p-4 md:pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-col-reverse md:flex-row justify-between items-center overflow-hidden relative">
+        <div className='hidden md:flex flex-col justify-center items-center h-full w-16 gap-4 '>
           {[
             { Name: "Bg", Icon: Images, EffectCard: "Background" },
             { Name: "Outfit", Icon: Shirt, EffectCard: "Cloth" },
@@ -150,7 +157,7 @@ const Page = ({ params }) => {
           ))}
         </div>
 
-        {showEffectCard && <div className='flex flex-col h-full w-80 border-r relative' >
+        {showEffectCard && <div className='hidden md:flex flex-col h-full w-80 border-r relative' >
           <button onClick={() => { setShowEffectCard(false) }} className="w-fit p-1 absolute right-3 bg-transparent border hover:border-black hover:dark:border-white rounded-md dark:text-white"><X size={18} /></button>
           {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} />}
           {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground} />}
@@ -158,7 +165,34 @@ const Page = ({ params }) => {
           {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} />}
         </div>}
 
-        <div className='flex flex-col justify-center items-center h-full w-full '>
+        {/* edit funtion for mobile screen */}
+
+        {!showEffectCard && <div className='flex flex-row w-full gap-4 overflow-x-auto overflow-y-hidden no-scrollbar mt-3 md:hidden'>
+          {[
+            { Name: "Bg", Icon: Images, EffectCard: "Background" },
+            { Name: "Outfit", Icon: Shirt, EffectCard: "Cloth" },
+            { Name: "Blur", Icon: CircleDashed, EffectCard: "BlurCard" },
+            { Name: "Crop", Icon: Crop, EffectCard: "CropCard" },
+            { Name: "Color", Icon: Palette, EffectCard: "ColorCorrection" },
+            { Name: "Aspect Ratio", Icon: Proportions, EffectCard: "AspectRatio" },
+          ].map((tool, index) => (
+            <button onClick={() => { setEffectCard(tool.EffectCard); setShowEffectCard(true); }} key={index} className='flex flex-col justify-center items-center group'>
+              <span className='flex flex-col items-center justify-center rounded-sm p-1 group-hover:bg-white group-hover:shadow-lg dark:group-hover:bg-[#27272a] dark:group-hover:shadow-lg'>
+                <tool.Icon size={24} />
+              </span>
+              <p className='text-sm'>{tool.Name}</p>
+            </button>
+          ))}
+        </div>}
+
+        {showEffectCard && <div className={`flex md:hidden flex-col h-auto w-full border-t relative `} >
+          {effectCard === "Cloth" && <OutfitMobile outfitChange={outfitChange} outfitRestore={outfitRestore} setShowEffectCard={setShowEffectCard}/>}
+          {effectCard === "Background" && <BackgroundMobile removeBackground={removeBackground} restoreBackground={restoreBackground} setShowEffectCard={setShowEffectCard}/>}
+          {effectCard === "ColorCorrection" && <ColorCorrectionMobile handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} setShowEffectCard={setShowEffectCard}/>}
+          {effectCard === "AspectRatio" && <AspectRatioMobile handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} setShowEffectCard={setShowEffectCard}/>}
+        </div>}
+
+        <div className='flex flex-col justify-center items-center h-full w-full overflow-auto'>
           {image === null && <ImageCardLoading />}
           {image !== null && <CldImage
             width="500"
@@ -167,18 +201,6 @@ const Page = ({ params }) => {
             sizes="100vw"
             alt="Description of my image"
             // blur="100"
-            // fillBackground
-            // remove={{
-            //     prompt: 'remove trees',
-            //     removeShadow: true
-            //   }}
-            // enhance
-            // extract="main subject" // crop to main subject & remove background
-            // background="blue"
-            // zoompan="loop"
-            // restore
-            // blurFaces="1000"
-            // replace={['cloth', 't-shirt']}
 
             // ============ background remove =================
             extract={bgremove}
@@ -211,11 +233,19 @@ const Page = ({ params }) => {
               setImageUrl(e.target.src);
             }}
 
+            onError={(e) => {
+              toast({
+                variant: "destructive",
+                description: "cloude server error",
+              })
+              console.log(e);
+            }}
+
             className={`h-auto max-h-full w-auto max-w-full ${effectLoading === true ? "animate-pulse" : ""}`}
           />}
         </div>
 
-        <Button variant="outline" onClick={DownloadImage} className='absolute top-4 right-4'><Download /></Button>
+        <Button variant="outline" onClick={DownloadImage} className='absolute top-4 right-4 bg-white dark:bg-black bg-opacity-50 dark:bg-opacity-50'><Download /></Button>
       </div>
     </div>
   )

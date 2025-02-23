@@ -7,7 +7,7 @@ const Page = () => {
     const [image, setImage] = useState("w5ceok3wmwjacsq5ymsp");
     return (
         <main>
-            <CldUploadWidget uploadPreset="photoshop"
+            <CldUploadWidget uploadPreset="photoCraft"
                 onSuccess={(results) => {
                     console.log('Public ID', results.info.public_id);
                     setImage(results.info.public_id);

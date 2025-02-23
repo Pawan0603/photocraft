@@ -72,12 +72,10 @@ function Page() {
                     <section className=''>
                         <h1 className='text-2xl font-semibold mb-4 pt-4'>Good to see you again</h1>
 
-                        <CldUploadWidget uploadPreset="photoshop"
+                        <CldUploadWidget uploadPreset="photoCraft"
                             onSuccess={(results) => {
                                 console.log('Public ID', results.info.public_id);
                                 setImg(results.info.public_id);
-
-
                             }}
                         >
                             {({ open }) => {
