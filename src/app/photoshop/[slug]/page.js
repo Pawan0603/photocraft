@@ -3,6 +3,8 @@ import AspectRatio from '@/components/editfunctionSlider/AspectRatio';
 import AspectRatioMobile from '@/components/editfunctionSlider/AspectRatioMobile';
 import Background from '@/components/editfunctionSlider/Background';
 import BackgroundMobile from '@/components/editfunctionSlider/BackgroundMobile';
+import Blur from '@/components/editfunctionSlider/Blur';
+import BlurMobile from '@/components/editfunctionSlider/BlurMobile';
 import ColorCorrection from '@/components/editfunctionSlider/ColorCorrection';
 import ColorCorrectionMobile from '@/components/editfunctionSlider/ColorCorrectionMobile';
 import Outfit from '@/components/editfunctionSlider/Outfit';
@@ -38,6 +40,10 @@ const Page = ({ params }) => {
   const [aspectRatio, setAspectRatio] = useState(null); // Aspect Ratio Managing
   const [fillBackground, setFillBackground] = useState(false); // Aspect Ratio Managing
   const [removeObject, setRemoveObject] = useState(null); // Remove Object Managing
+  const [blur, setBlur] = useState(0);
+  const [blurFaces, setBlurFaces] = useState(0);
+  const [pixelate, setPixelate] = useState(0);
+  const [pixelateFaces, setPixelateFaces] = useState(0);
 
   const EditFunctionObject = [
     { Name: "Bg", Icon: Images, EffectCard: "Background" },
@@ -140,6 +146,19 @@ const Page = ({ params }) => {
     else setRemoveObject((prevState) => prevState.filter((item) => item !== object));
   }
 
+  const handleBlur = (event, value) => {
+    setEffectLoading(true);
+    if (event === "blur") {
+      setBlur(value);
+    } else if (event === "blurFaces") {
+      setBlurFaces(value);
+    } else if (event === "pixelate") {
+      setPixelate(value);
+    } else if (event === "pixelateFaces") {
+      setPixelateFaces(value);
+    }
+  }
+
   const DownloadImage = async () => {
     if (!imageUrl) {
       console.error("No image URL available for download.");
@@ -165,6 +184,8 @@ const Page = ({ params }) => {
     }
   }
 
+  
+
   return (
     <div className='flex justify-center items-center w-screen h-[calc(100vh-65.5px)] bg-gradient-to-br from-primary/10 via-background to-background overflow-hidden'>
       <div className="bg-white dark:bg-[#18181b] p-4 md:pl-1 rounded-lg shadow-lg w-full md:w-[95%] lg:w-[90%] xl:w-[85%] 2xl:w-[80%] h-full md:h-[95%] lg:h-[90%]  flex flex-col-reverse md:flex-row justify-between items-center overflow-hidden relative">
@@ -187,6 +208,7 @@ const Page = ({ params }) => {
           {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} />}
           {effectCard === "ReplaceObject" && <ReplaceObject />}
           {effectCard === "RemoveObject" && <RemoveObject handleRemoveObject={handleRemoveObject} handleDeleteRemoveObject={handleDeleteRemoveObject} removeObject={removeObject}/>}
+          {effectCard === "BlurCard" && <Blur handleBlur={handleBlur} blur={blur} blurFaces={blurFaces} pixelate={pixelate} pixelateFaces={pixelateFaces} />}
         </div>}
 
         {/* edit funtion for mobile screen */}
@@ -209,6 +231,7 @@ const Page = ({ params }) => {
           {effectCard === "AspectRatio" && <AspectRatioMobile handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} setShowEffectCard={setShowEffectCard}/>}
           {effectCard === "ReplaceObject" && <ReplaceObjectMobile />}
           {effectCard === "RemoveObject" && <RemoveObjectMobile handleRemoveObject={handleRemoveObject} handleDeleteRemoveObject={handleDeleteRemoveObject} removeObject={removeObject} setShowEffectCard={setShowEffectCard}/>}
+          {effectCard === "BlurCard" && <BlurMobile handleBlur={handleBlur} blur={blur} blurFaces={blurFaces} pixelate={pixelate} pixelateFaces={pixelateFaces} setShowEffectCard={setShowEffectCard}/>}
         </div>}
 
         <div className='flex flex-col justify-center items-center h-full w-full overflow-auto'>
@@ -248,6 +271,28 @@ const Page = ({ params }) => {
 
             // ==================== RemoveObject ==================
             remove={removeObject}
+
+            // ================= blur ======================
+            blur={blur} // 0 - 2000
+            blurFaces={blurFaces} // 0 - 2000
+            pixelate={pixelate} // 0 - 200
+            pixelateFaces={pixelateFaces} // 0 - 200
+
+            // ==================== Crop ==================
+            // crop={{
+            //   type: 'crop',
+            //   width: 800,
+            //   height: 800,
+            //   x: 80,
+            //   y: 350,
+            //   gravity: 'north_east',
+            //   source: true
+            // }}
+
+            // restore="all"
+
+            // blurRegion={{ x: 100, y: 100, width: 400, height: 400 }}
+            
 
 
 
