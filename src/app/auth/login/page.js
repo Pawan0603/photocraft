@@ -25,13 +25,13 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_HOST_URL}/api/login`, formData);
-      if(res.data.success) {
+      if (res.data.success) {
         console.log("Login response:", res.data);
         localStorage.setItem("token", res.data.token);
         toast({
           description: "Logged in successfully",
         })
-        router.push("/");
+        router.push('/');
       } else {
         toast({
           variant: "destructive",

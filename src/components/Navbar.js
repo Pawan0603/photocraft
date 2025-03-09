@@ -7,15 +7,42 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import DropUserMenu from "./DropUserMenu";
 import DropDownMenuMobile from "./DropDownMenuMobile";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const {toast} = useToast();
+  const router = useRouter();
+
+  const valideToken = async (TOKEN) => {
+    try {
+      let res = await axios.post('/api/validateToken', { token: TOKEN });
+      setUser(res.data.data);
+      console.log(res.data.data);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: error.response.data.message,
+      }) 
+      if (error.response.data.message === "jwt expired") {
+        if (typeof window === 'undefined') return;
+        localStorage.removeItem('token');
+      }
+      setUser(null);
+    }
+
+  }
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && token === null) {
-      setToken(window.localStorage.getItem('token'));
+    if (typeof window !== 'undefined' && user === null) {
+      let Token = localStorage.getItem('token');
+      if (!Token) return;
+      valideToken(Token);
     }
   }, []);
 
@@ -52,8 +79,8 @@ export function Navbar() {
             <div className="ml-2">
               <ThemeToggle />
             </div>
-            {token === null ? <Link href={"/auth/login"}><Button>Get Started</Button></Link> :
-            <DropUserMenu Logout={Logout}/>}
+            {user === null ? <Link href={"/auth/login"}><Button>Get Started</Button></Link> :
+              <DropUserMenu Logout={Logout} />}
           </div>
 
           {/* Mobile menu button */}
@@ -100,8 +127,8 @@ export function Navbar() {
                 Examples
               </Link>
               <div className="px-3 py-2">
-                {token === null ? <Link href={'/auth/login'}><Button className="w-full">Get Started</Button></Link> :
-                <DropDownMenuMobile Logout={Logout}/>}
+                {user === null ? <Link href={'/auth/login'}><Button className="w-full">Get Started</Button></Link> :
+                  <DropDownMenuMobile Logout={Logout} />}
 
               </div>
             </div>
