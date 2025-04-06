@@ -9,6 +9,10 @@ const imageSchema = new Schema({
         type: String,
         required: [true, "public_id is required"]
     },
+    createAt: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 const UserSchema = new Schema({

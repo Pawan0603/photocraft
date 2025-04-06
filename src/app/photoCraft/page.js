@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { CirclePlus, FileImage } from 'lucide-react'
-import { CldUploadWidget } from 'next-cloudinary';
+import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -20,12 +20,18 @@ function Page() {
         try {
             let res = await axios.post('/api/getImages', { token: TOKEN });
             setImgData(res.data.data);
+            if (res.data.data.length === 0) {
+                toast({
+                    title: "No images found",
+                    description: "You can upload a new image",
+                })
+            }
         } catch (error) {
             toast({
                 variant: "destructive",
                 description: error.response.data.message,
             })
-            if(error.response.data.message === "jwt expired"){
+            if (error.response.data.message === "jwt expired") {
                 if (typeof window === 'undefined') return;
                 localStorage.removeItem('token');
                 router.push('/auth/login');
@@ -44,21 +50,21 @@ function Page() {
         }
     }, []);
 
-    
+
     const uploadtoDB = async (imageId) => {
         setLoading(true);
         try {
             let data = { imageId: imageId, token };
-            let res = await axios.post('/api/upload', data);            
+            let res = await axios.post('/api/upload', data);
             router.push(`/photoshop/${imageId}`);
         } catch (error) {
             console.log(error);
-            
+
         } finally {
             setLoading(false);
         }
     }
-    
+
     useEffect(() => {
         if (img === null) return;
         uploadtoDB(img);
@@ -101,14 +107,27 @@ function Page() {
                             </> :
                                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                     {imgData.map((img, index) => (
-                                        <Card onClick={()=>{
+                                        <Card onClick={() => {
                                             router.push(`/photoshop/${img.public_id}`)
                                         }} key={index} className="p-4 h-48 relative flex items-center justify-center hover:shadow-lg hover:cursor-pointer">
-                                            <FileImage className='text-neutral-400 dark:text-neutral-500' size={40} />
+                                            <CldImage
+                                                width="500"
+                                                height="500"
+                                                src={img.public_id}
+                                                className=' h-auto max-h-full w-auto max-w-full'
+                                                loading="lazy"
+                                                sizes="100vw"
+                                                alt="Description of my image"   
+                                            />
+                                            {/* <FileImage className='text-neutral-400 dark:text-neutral-500' size={40} /> */}
                                             <span className='absolute bottom-3 left-4'>
-                                                <p className='font-bold'>Untitled Image</p>
+                                                <p className='font-bold'>{img.name}</p>
                                                 <p className="text-muted-foreground text-sm">
-                                                    Last edited 03/08/2024
+                                                    createAt: {new Date(img.createAt).toLocaleDateString("en-US", {
+                                                        year: 'numeric',
+                                                        month: '2-digit',
+                                                        day: '2-digit'
+                                                    })}
                                                 </p>
                                             </span>
                                         </Card>
