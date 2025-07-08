@@ -4,8 +4,21 @@ import { Camera, Wand2, Sparkles, Image as ImageIcon, ArrowRight, Layers, Palett
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [loginStatus, setLoginStatus] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let token = localStorage.getItem("token");
+      if (token) {
+        setLoginStatus(true);
+      } else {
+        setLoginStatus(false);
+      }
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       {/* Theme Toggle */}
@@ -27,19 +40,25 @@ export default function Home() {
               <span className="text-primary block mt-2">AI Magic</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Professional-grade photo editing made simple with artificial intelligence. 
+              Professional-grade photo editing made simple with artificial intelligence.
               Perfect your photos in seconds, not hours.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/photoCraft">
-              <Button size="lg" className="gap-2">
-                Start Editing Now
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              </Link>
-              <Button size="lg" variant="secondary">
+              {loginStatus === true ? (<Link href="/photoCraft">
+                <Button size="lg" className="gap-2">
+                  Start Editing Now
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>) : (<Link href="/auth/login">
+                <Button size="lg" className="gap-2">
+                  Get Started
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>)}
+
+              {/* <Button size="lg" variant="secondary">
                 View Examples
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
@@ -89,7 +108,7 @@ export default function Home() {
             <div>
               <h2 className="text-3xl font-bold mb-6">See the Magic in Action</h2>
               <p className="text-muted-foreground mb-8">
-                Watch as our AI transforms your photos in real-time. From basic enhancements 
+                Watch as our AI transforms your photos in real-time. From basic enhancements
                 to complex edits, achieve professional results with just a few clicks.
               </p>
               <div className="space-y-4">
