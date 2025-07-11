@@ -49,10 +49,10 @@ const Page = ({ params }) => {
     { Name: "Bg", Icon: Images, EffectCard: "Background" },
     { Name: "Outfit", Icon: Shirt, EffectCard: "Cloth" },
     { Name: "Blur", Icon: CircleDashed, EffectCard: "BlurCard" },
-    { Name: "Crop", Icon: Crop, EffectCard: "CropCard" },
+    // { Name: "Crop", Icon: Crop, EffectCard: "CropCard" },
     { Name: "Color", Icon: Palette, EffectCard: "ColorCorrection" },
     { Name: "Aspect Ratio", Icon: Proportions, EffectCard: "AspectRatio" },
-    { Name: "Replace", Icon: Replace, EffectCard: "ReplaceObject" },
+    // { Name: "Replace", Icon: Replace, EffectCard: "ReplaceObject" },
     { Name: "Remove", Icon: WandSparkles, EffectCard: "RemoveObject" },
   ]
 
