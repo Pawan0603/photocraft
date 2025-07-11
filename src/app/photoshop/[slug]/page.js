@@ -35,6 +35,7 @@ const Page = ({ params }) => {
 
   const [bgremove, setBgremove] = useState(null);
   const [background, setBackground] = useState(null);
+  const [replaceBackground, setReplaceBackground] = useState(null); // Replace Background Managing
   const [outfit, setOutfit] = useState(null);
   const [colorCorrection, setColorCorrection] = useState({ brightness: 0, contrast: 0, grayscale: false, gamma: 0, hue: 0, saturation: 0, vibrance: 0, sepia: 0, tint: null, duotone: null });
   const [aspectRatio, setAspectRatio] = useState(null); // Aspect Ratio Managing
@@ -67,15 +68,26 @@ const Page = ({ params }) => {
 
   const removeBackground = (color) => {
     setEffectLoading(true);
+    setReplaceBackground(null);
+
     if (color) setBackground(color);
     else setBackground(null);
     setBgremove("main subject");
+  }
+
+  const ReplaceBackground = (prompt) => {
+    setEffectLoading(true);
+    setBgremove(null);
+    setBackground(null);
+
+    setReplaceBackground(prompt);
   }
 
   const restoreBackground = () => {
     setEffectLoading(true);
     setBackground(null);
     setBgremove(null);
+    setReplaceBackground(null);
   }
 
   const outfitChange = (cloth) => {
@@ -203,7 +215,7 @@ const Page = ({ params }) => {
         {showEffectCard && <div className='hidden md:flex flex-col h-full w-80 border-r relative' >
           <button onClick={() => { setShowEffectCard(false) }} className="w-fit p-1 absolute right-3 bg-transparent border hover:border-black hover:dark:border-white rounded-md dark:text-white"><X size={18} /></button>
           {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} />}
-          {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground} />}
+          {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground} ReplaceBackground={ReplaceBackground} replaceBackground={replaceBackground}/>}
           {effectCard === "ColorCorrection" && <ColorCorrection handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} />}
           {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} />}
           {effectCard === "ReplaceObject" && <ReplaceObject />}
@@ -247,7 +259,7 @@ const Page = ({ params }) => {
             // ============ background remove =================
             extract={bgremove}
             background={background}
-            // replaceBackground="office"
+            replaceBackground= {replaceBackground}
 
             // ============ Outfit =================
             replace={outfit}
