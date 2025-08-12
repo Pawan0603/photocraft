@@ -1,27 +1,30 @@
 import dbConnect from "@/lib/dbConnect";
-import UserModel from "@/model/user";
+import ImageModel from "@/model/Image";
 import { NextResponse } from "next/server";
 var jwt = require('jsonwebtoken');
 
 export async function POST(request) {
     await dbConnect();
     try {
-        const { imageId, token } = await request.json();
-        console.log('Image ID', imageId, 'Token', token);
+        const { imageUrl, imageId, token } = await request.json();
+        console.log('Image URL', imageUrl, 'Image ID', imageId, 'Token', token);
 
-        if (!imageId || !token) {
+        if (!imageUrl ||!imageId || !token) {
             return NextResponse.json({ success: false, message: 'Invalid Request' }, { status: 400 });
         }
 
         let userData = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await UserModel.findOne({ email: userData.email });
+        if (!userData) return NextResponse.json({ success: false, message: 'User not found' }, { status: 400 });
 
-        if (!user) return NextResponse.json({ success: false, message: 'User not found' }, { status: 400 });
+        const newImage = new ImageModel({
+            userId: userData.id,
+            name: "Untitled",
+            url: imageUrl,
+            publicId: imageId
+        });
 
-        user.imageData.push({ name: "ultitled", public_id: imageId });
-
-        await user.save();
+        await newImage.save();
 
         return NextResponse.json({ success: true, message: 'Image Uploaded' }, { status: 200 });
     } catch (error) {

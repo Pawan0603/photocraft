@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user";
+import ImageModel from "@/model/Image";
 import { NextResponse } from "next/server";
 var jwt = require('jsonwebtoken');
 
@@ -12,7 +13,7 @@ export async function POST(request) {
 
         let userData = jwt.verify(token, process.env.JWT_SECRET);
 
-        const {imageData} = await UserModel.findOne({ email: userData.email });
+        const imageData = await ImageModel.find({ userId: userData.id });
 
         if (!imageData) return NextResponse.json({ success: false, message: 'User not found' }, { status: 400 });
 

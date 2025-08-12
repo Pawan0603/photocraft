@@ -49,7 +49,7 @@ export function Navbar() {
   const Logout = () => {
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem('token');
-      setToken(null);
+      setUser(null);
     }
   }
 

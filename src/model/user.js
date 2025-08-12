@@ -1,20 +1,5 @@
 import mongoose, {Schema} from "mongoose";
 
-const imageSchema = new Schema({
-    name: {
-        type: String,
-        required: [true, "name is required"]
-    },
-    public_id: {
-        type: String,
-        required: [true, "public_id is required"]
-    },
-    createAt: {
-        type: Date,
-        default: Date.now
-    },
-})
-
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -34,8 +19,7 @@ const UserSchema = new Schema({
         type: String,
         enum: ["free", "pro", "premium"],
         default: "free"
-    },
-    imageData: [imageSchema]
+    }
 })
 
 const UserModel = mongoose.models.User || mongoose.model("User", UserSchema)
