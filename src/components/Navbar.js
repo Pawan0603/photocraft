@@ -35,7 +35,6 @@ export function Navbar() {
       }
       setUser(null);
     }
-
   }
 
   useEffect(() => {
@@ -46,10 +45,23 @@ export function Navbar() {
     }
   }, []);
 
-  const Logout = () => {
+  const Logout = async () => {
     if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('token');
-      setUser(null);
+      try {
+        await axios.post('/api/logout');
+        window.localStorage.removeItem('token');
+        setUser(null);
+        toast({
+          title: "Logout Successful",
+          description: "You have been logged out.",
+        });
+        window.location.reload();
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: error.response.data.message,
+        });
+      }  
     }
   }
 
