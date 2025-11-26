@@ -9,10 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast"
 import axios from "axios";
+import { useUser } from "@/context/UserContext";
 
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { valideToken } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -31,6 +33,7 @@ export default function LoginPage() {
         toast({
           description: "Logged in successfully",
         })
+        valideToken(res.data.token);
         router.push('/');
       } else {
         toast({
