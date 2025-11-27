@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu, X, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -9,7 +9,6 @@ import DropUserMenu from "./DropUserMenu";
 import DropDownMenuMobile from "./DropDownMenuMobile";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 
 
@@ -18,33 +17,6 @@ export function Navbar() {
   const { user, setUser, loading } = useUser();
 
   const {toast} = useToast();
-  const router = useRouter();
-
-  // const valideToken = async (TOKEN) => {
-  //   try {
-  //     let res = await axios.post('/api/validateToken', { token: TOKEN });
-  //     setUser(res.data.data);
-  //     console.log(res.data.data);
-  //   } catch (error) {
-  //     toast({
-  //       variant: "destructive",
-  //       description: error.response.data.message,
-  //     }) 
-  //     if (error.response.data.message === "jwt expired") {
-  //       if (typeof window === 'undefined') return;
-  //       localStorage.removeItem('token');
-  //     }
-  //     setUser(null);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && user === null) {
-  //     let Token = localStorage.getItem('token');
-  //     if (!Token) return;
-  //     valideToken(Token);
-  //   }
-  // }, []);
 
   const Logout = async () => {
     if (typeof window !== 'undefined') {
@@ -86,8 +58,8 @@ export function Navbar() {
             <Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
               Pricing
             </Link>
-            <Link href="/examples" className="text-muted-foreground hover:text-foreground transition-colors">
-              Examples
+            <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+              About
             </Link>
             <div className="ml-2">
               <ThemeToggle />

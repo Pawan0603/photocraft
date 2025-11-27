@@ -15,10 +15,10 @@ export const UserProvider = ({ children }) => {
             setUser(res.data.data);
             console.log(res.data.data);
         } catch (error) {
-            toast({
-                variant: "destructive",
-                description: error.response.data.message,
-            })
+            // toast({
+            //     variant: "destructive",
+            //     description: error.response.data.message,
+            // })
             if (error.response.data.message === "jwt expired") {
                 if (typeof window === 'undefined') return;
                 localStorage.removeItem('token');
