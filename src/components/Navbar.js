@@ -52,14 +52,14 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/#features" className="text-muted-foreground hover:text-foreground transition-colors">
               Features
-            </Link>
-            <Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-              Pricing
             </Link>
             <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
               About
+            </Link>
+            <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+              Contact Us
             </Link>
             <div className="ml-2">
               <ThemeToggle />
@@ -91,25 +91,25 @@ export function Navbar() {
           <div className="md:hidden border-t border-border">
             <div className="space-y-1 pt-2 pb-3">
               <Link
-                href="#features"
+                href="/#features"
                 className="block px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md"
                 onClick={() => setIsOpen(false)}
               >
                 Features
               </Link>
               <Link
-                href="/pricing"
+                href="/about"
                 className="block px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md"
                 onClick={() => setIsOpen(false)}
               >
-                Pricing
+                About
               </Link>
               <Link
-                href="/examples"
+                href="/contact"
                 className="block px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md"
                 onClick={() => setIsOpen(false)}
               >
-                Examples
+                Contact Us
               </Link>
               <div className="px-3 py-2">
                 {user === null ? <Link href={'/auth/login'}><Button className="w-full">Get Started</Button></Link> :
