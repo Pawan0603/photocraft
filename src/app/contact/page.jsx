@@ -1,9 +1,11 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import axios from "axios"
+import { useUser } from "@/context/UserContext";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -14,6 +16,16 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState("")
+  const { user } = useUser();
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && user === null) {
+      let Token = localStorage.getItem('token');
+      if (!Token) return;
+      setToken(Token);
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -28,11 +40,24 @@ export default function ContactPage() {
     setIsSubmitting(true)
 
     try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      if (!user) return setSubmitStatus("unauthenticated");
+
+      const res = await axios.post("/api/message", {
+        content: formData,
+        token: token,
+      })
+
+      console.log(res.data);
+
       setSubmitStatus("success")
-      setFormData({ name: "", email: "", subject: "", message: "" })
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      })
       setTimeout(() => setSubmitStatus(""), 3000)
+
     } catch (error) {
       setSubmitStatus("error")
       setTimeout(() => setSubmitStatus(""), 3000)
@@ -158,6 +183,11 @@ export default function ContactPage() {
             {submitStatus === "error" && (
               <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive">
                 Something went wrong. Please try again.
+              </div>
+            )}
+            {submitStatus === "unauthenticated" && (
+              <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/30 text-yellow-300">
+                Please <Link href="/auth/login" className="underline">log in</Link> to send a message.
               </div>
             )}
 
