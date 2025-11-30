@@ -251,24 +251,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border bg-background/50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-muted-foreground mb-6">PhotoCraft - Professional Photo Editing Made Simple</p>
-          <div className="flex justify-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-pink-500 transition-colors">
-              Privacy
-            </a>
-            <a href="#" className="hover:text-pink-500 transition-colors">
-              Terms
-            </a>
-            <a href="#" className="hover:text-pink-500 transition-colors">
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
     </main>
   )
 }
