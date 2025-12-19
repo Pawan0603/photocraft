@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 import { signToken } from "@/lib/jwt";
 
 export async function POST(request) {
-    console.log("Login route called");
     await dbConnect();
     try {
         const { email, password } = await request.json();
@@ -22,8 +21,6 @@ export async function POST(request) {
         if (!isPasswordValid) {
             return NextResponse.json({ success: false, message: "Invalid password" }, { status: 200 });
         }
-
-        console.log("User authenticated successfully :", user);
 
         const token = signToken({ email: user.email, id: user._id, name: user.name });
 

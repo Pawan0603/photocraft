@@ -92,6 +92,7 @@ const Page = ({ params }) => {
 
   const outfitChange = (cloth) => {
     setEffectLoading(true);
+    console.log('cloth', cloth);
     setOutfit(['cloth', cloth]);
   }
 
@@ -214,7 +215,7 @@ const Page = ({ params }) => {
 
         {showEffectCard && <div className='hidden md:flex flex-col h-full w-80 border-r relative' >
           <button onClick={() => { setShowEffectCard(false) }} className="w-fit p-1 absolute right-3 bg-transparent border hover:border-black hover:dark:border-white rounded-md dark:text-white"><X size={18} /></button>
-          {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} />}
+          {effectCard === "Cloth" && <Outfit outfitChange={outfitChange} outfitRestore={outfitRestore} outfit={outfit}/>}
           {effectCard === "Background" && <Background removeBackground={removeBackground} restoreBackground={restoreBackground} ReplaceBackground={ReplaceBackground} replaceBackground={replaceBackground}/>}
           {effectCard === "ColorCorrection" && <ColorCorrection handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} />}
           {effectCard === "AspectRatio" && <AspectRatio handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} />}
