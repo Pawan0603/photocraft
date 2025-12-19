@@ -28,7 +28,7 @@ export default function LoginPage() {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_HOST_URL}/api/login`, formData);
       if (res.data.success) {
-        console.log("Login response:", res.data);
+        // console.log("Login response:", res.data);
         localStorage.setItem("token", res.data.token);
         toast({
           description: "Logged in successfully",
@@ -42,7 +42,7 @@ export default function LoginPage() {
         })
       }
     } catch (error) {
-      console.error("Login error:", error);
+      // console.error("Login error:", error);
       toast({
         variant: "destructive",
         description: error.message,

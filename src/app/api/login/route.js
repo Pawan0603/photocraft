@@ -3,9 +3,10 @@ import UserModel from "@/model/user";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-var jwt = require('jsonwebtoken');
+import { signToken } from "@/lib/jwt";
 
 export async function POST(request) {
+    console.log("Login route called");
     await dbConnect();
     try {
         const { email, password } = await request.json();
@@ -22,7 +23,9 @@ export async function POST(request) {
             return NextResponse.json({ success: false, message: "Invalid password" }, { status: 200 });
         }
 
-        const token = jwt.sign({ email: user.email, id: user._id, name: user.name }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        console.log("User authenticated successfully :", user);
+
+        const token = signToken({ email: user.email, id: user._id, name: user.name });
 
         const cookieStore = await cookies()
         cookieStore.set("TheardCraftToken", token, {
