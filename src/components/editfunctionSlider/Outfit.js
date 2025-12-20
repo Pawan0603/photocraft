@@ -98,10 +98,10 @@ export default function Outfit({ outfitChange, outfitRestore, outfit }) {
       </section>
       <section className='h-full'>
         <h4 className='text-gray-700 dark:text-neutral-300 my-3 text-sm'>Suggested Outfits 👕👗</h4>
-        <ScrollArea className="flex flex-row justify-between w-full h-[calc(100%-80px)] mt-3">
+        <ScrollArea className="flex flex-row justify-between w-full h-[calc(100%-215px)] mt-3">
           <div className="flex flex-wrap gap-2 mt-2">
             {clothingArray.map((cloth, index) => (
-              <button key={index} onClick={() => { outfitChange(cloth.name) }} className="w-full px-3 py-1 flex items-center border border-neutral-400 dark:border-neutral-700 rounded-md text-sm">
+              <button key={index} onClick={() => { outfitChange(cloth.name) }} className="w-full px-3 py-1 flex items-center border border-neutral-400 dark:border-neutral-700 rounded-md text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 transition">
                 <Search size={18} />
                 <span className='ml-2 flex justify-between w-full'>
                   {cloth.name}

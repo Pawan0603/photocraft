@@ -97,6 +97,7 @@ const Page = ({ params }) => {
   }
 
   const outfitRestore = () => {
+    if (outfit === null) return;
     setEffectLoading(true);
     setOutfit(null);
   }
