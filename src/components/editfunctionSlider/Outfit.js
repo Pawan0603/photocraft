@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { ScrollArea } from '../ui/scroll-area';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
-import { ArrowBigRight, MoveUpLeft, RotateCcw, Search, Shirt, Sparkles } from 'lucide-react';
+import { RotateCcw, Search, Sparkles } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -53,7 +53,7 @@ export default function Outfit({ outfitChange, outfitRestore, outfit }) {
 
 
   useEffect(() => {
-    setPrompt(outfit?.prompt || "");
+    if(outfit !== null && outfit !== undefined) setPrompt(outfit[1] || "");
     // This effect runs when the component mounts and sets the initial prompt value
   }, []);
 
