@@ -242,7 +242,7 @@ const Page = ({ params }) => {
           {effectCard === "Background" && <BackgroundMobile removeBackground={removeBackground} restoreBackground={restoreBackground} setShowEffectCard={setShowEffectCard} />}
           {effectCard === "ColorCorrection" && <ColorCorrectionMobile handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} setShowEffectCard={setShowEffectCard} />}
           {effectCard === "AspectRatio" && <AspectRatioMobile handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} setShowEffectCard={setShowEffectCard} />}
-          {effectCard === "ReplaceObject" && <ReplaceObjectMobile />}
+          {effectCard === "ReplaceObject" && <ReplaceObjectMobile setShowEffectCard={setShowEffectCard}/>}
           {effectCard === "RemoveObject" && <RemoveObjectMobile handleRemoveObject={handleRemoveObject} handleDeleteRemoveObject={handleDeleteRemoveObject} removeObject={removeObject} setShowEffectCard={setShowEffectCard} />}
           {effectCard === "BlurCard" && <BlurMobile handleBlur={handleBlur} blur={blur} blurFaces={blurFaces} pixelate={pixelate} pixelateFaces={pixelateFaces} setShowEffectCard={setShowEffectCard} />}
         </div>}

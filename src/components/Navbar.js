@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -15,12 +15,18 @@ import { usePathname } from "next/navigation";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser, loading } = useUser();
+  const [screenWidth, setScreenWidth] = useState();
 
   const {toast} = useToast();
 
   const pathname = usePathname();
 
-  if (pathname.startsWith("/photoshop")) {
+  useEffect(() => {
+    if(typeof window === "undefined") return;
+    setScreenWidth(window.innerWidth);
+  }, []);
+
+  if (pathname.startsWith("/photoshop") && screenWidth < 768) {
     return null;
   }
 
