@@ -10,13 +10,19 @@ import DropDownMenuMobile from "./DropDownMenuMobile";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/context/UserContext";
-
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, setUser, loading } = useUser();
 
   const {toast} = useToast();
+
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/photoshop")) {
+    return null;
+  }
 
   const Logout = async () => {
     if (typeof window !== 'undefined') {
