@@ -239,7 +239,7 @@ const Page = ({ params }) => {
         </div>}
 
         {showEffectCard && <div className={`flex md:hidden flex-col h-auto w-full border-t relative `} >
-          {effectCard === "Cloth" && <OutfitMobile outfitChange={outfitChange} outfitRestore={outfitRestore} setShowEffectCard={setShowEffectCard} />}
+          {effectCard === "Cloth" && <OutfitMobile outfitChange={outfitChange} outfitRestore={outfitRestore} setShowEffectCard={setShowEffectCard} outfit={outfit}/>}
           {effectCard === "Background" && <BackgroundMobile removeBackground={removeBackground} restoreBackground={restoreBackground} setShowEffectCard={setShowEffectCard} ReplaceBackground={ReplaceBackground} replaceBackground={replaceBackground}/>}
           {effectCard === "ColorCorrection" && <ColorCorrectionMobile handleColorCorrection={handleColorCorrection} colorCorrection={colorCorrection} setShowEffectCard={setShowEffectCard} />}
           {effectCard === "AspectRatio" && <AspectRatioMobile handleAspectRatio={handleAspectRatio} aspectRatio={aspectRatio} setShowEffectCard={setShowEffectCard} />}
