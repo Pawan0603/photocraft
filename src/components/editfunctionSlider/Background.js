@@ -45,7 +45,7 @@ function Background({ removeBackground, restoreBackground, ReplaceBackground, re
         </section>
 
         <section>
-          <h4 className='text-gray-700 dark:text-gray-300 mb-3'>Background Color</h4>
+          <h4 className='text-gray-700 dark:text-gray-300 mb-3 text-sm'>Background Color</h4>
           <div className='gap-2 grid grid-cols-5'>
             <button className='flex items-center justify-center border rounded-lg h-[30px] w-[30px] hover:shadow-md hover:cursor-pointer'>
               <label htmlFor='color' className='text-black dark:text-white flex items-center justify-center'><Pipette size={20} /></label>
@@ -70,7 +70,7 @@ function Background({ removeBackground, restoreBackground, ReplaceBackground, re
         </section>
 
         <section>
-          <h4 className='text-gray-700 dark:text-gray-300 mb-3'>Replace Background</h4>
+          <h4 className='text-gray-700 dark:text-gray-300 mb-3 text-sm'>Replace Background</h4>
           <div className='flex flex-col gap-2'>
             <Textarea placeholder="Enter your prompt here." value={prompt} onChange={handlePromptChange} />
             <Button variant="outline" size="sm" className="self-end" onClick={handleReplaceBackground} disabled={BtnDisable}>

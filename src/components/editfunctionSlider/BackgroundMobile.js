@@ -1,9 +1,35 @@
-import { Ban, Check, Pipette, X } from 'lucide-react'
-import React from 'react'
+"use client"
+import { Ban, Check, Pipette, Sparkles, X } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
+import { Textarea } from '../ui/textarea'
 
-const BackgroundMobile = ({ removeBackground, restoreBackground, setShowEffectCard }) => {
+const BackgroundMobile = ({ removeBackground, restoreBackground, setShowEffectCard, ReplaceBackground, replaceBackground }) => {
+  const [prompt, setPrompt] = useState("");
+  const [BtnDisable, setBtnDisable] = useState(true);
+
+  useEffect(() => {
+    setPrompt(replaceBackground?.prompt || "");
+    // This effect runs when the component mounts and sets the initial prompt value
+  }, []);
+
+  const handlePromptChange = (e) => {
+    setPrompt(e.target.value);
+    if (e.target.value.trim() === "" || e.target.value.length < 3 || e.target.value.trim() === replaceBackground?.prompt?.trim()) {
+      setBtnDisable(true);
+    } else {
+      setBtnDisable(false);
+    }
+  }
+
+  const handleReplaceBackground = () => {
+    if (prompt.trim() === "" || prompt.length < 3 || prompt.trim() === removeBackground?.prompt?.trim()) {
+      return;
+    }
+    ReplaceBackground({ prompt });
+    setBtnDisable(true);
+  }
 
   const cancel = () => {
     restoreBackground();
@@ -11,7 +37,18 @@ const BackgroundMobile = ({ removeBackground, restoreBackground, setShowEffectCa
   }
   return (
     <div className='mt-3'>
-      <section className=''>
+
+      <section>
+        {/* <h4 className='text-gray-700 dark:text-gray-300 mb-3'>Replace Background</h4> */}
+        <div className='flex flex-col gap-2'>
+          <Textarea placeholder="Describe the background you want to replace with..." value={prompt} onChange={handlePromptChange} />
+          <Button variant="outline" size="sm" className="self-end" onClick={handleReplaceBackground} disabled={BtnDisable}>
+            <Sparkles /> Do magic
+          </Button>
+        </div>
+      </section>
+
+      <section className='flex flex-row items-center mt-4 gap-2'>
         <div className='flex flex-row gap-2 mb-2'>
           <button onClick={() => { restoreBackground() }} className='border rounded-lg p-2 hover:shadow-md'>
             <Ban size={20} color='red' />
