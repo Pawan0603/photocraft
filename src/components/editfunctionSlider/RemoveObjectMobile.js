@@ -1,7 +1,8 @@
 'use client';
-import { Check, X } from 'lucide-react'
+import { Check, Sparkles, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
+import { Input } from '../ui/input';
 
 function RemoveObjectMobile({ handleRemoveObject, handleDeleteRemoveObject, removeObject, setShowEffectCard }) {
   const [text, setText] = useState('');
@@ -23,30 +24,22 @@ function RemoveObjectMobile({ handleRemoveObject, handleDeleteRemoveObject, remo
 
   return (
     <div className='mt-3'>
-      <section className='flex flex-col gap-4'>
+      <section className='flex flex-col'>
         <form onSubmit={RemoveObj} className='flex flex-col gap-3 place-items-end'>
           <label className='text-gray-700 dark:text-gray-300 text-sm self-start' htmlFor='text'>Enter prompt to remove object.</label>
-          <input
-            className="w-full bg-zinc-200 text-zinc-600 font-mono ring-1 ring-zinc-400 focus:ring-2 focus:ring-rose-400 outline-none duration-300 placeholder:text-zinc-600 placeholder:opacity-50 rounded-full px-4 py-2 shadow-md focus:shadow-lg focus:shadow-rose-400 dark:shadow-md dark:shadow-purple-500"
-            autoComplete="off"
-            placeholder="Example: remove glass"
-            name="text"
-            type="text"
-            value={text}
-            onChange={handleChange}
-            required
-          />
-          <button disabled={text === ''} type='submit' className="bg-rose-400 text-white font-semibold rounded-full px-4 py-2 shadow-md focus:shadow-lg focus:shadow-rose-400 dark:shadow-md dark:shadow-purple-500 disabled:opacity-50">Remove</button>
-
+          <Input type="text" placeholder="Example: glass" value={text} onChange={handleChange} required />
+          <Button variant="outline" size="sm" className="self-end" type="submit" disabled={text === ''}>
+            <Sparkles /> Do magic
+          </Button>
         </form>
 
         <section>
-          <h4 className='text-gray-700 dark:text-gray-300 mb-3'>Remove Object</h4>
+          <h4 className='text-sm text-neutral-700 dark:text-neutral-400 mb-3'>Remove Object</h4>
           <div className='flex flex-row gap-2 overflow-auto no-scrollbar'>
             {removeObject !== null && removeObject.map((obj, index) => {
-              return (<div key={index} className='flex justify-between items-center bg-neutral-50 hover:bg-neutral-100 text-zinc-600 font-mono rounded-md px-4 py-2 hover:shadow-md dark:bg-zinc-800 dark:text-zinc-300 dark:shadow-purple-500 gap-2'>
-                <p>{obj}</p>
-                <button onClick={() => { handleDeleteRemoveObject(obj) }} className=""><X size={18}/></button>
+              return (<div key={index} className='flex justify-between items-center bg-neutral-50 hover:bg-neutral-100 text-zinc-600 font-mono rounded-full px-4 py-2 hover:shadow-md dark:bg-zinc-800 dark:text-zinc-300 dark:shadow-black gap-2'>
+                <p className='text-sm'>{obj}</p>
+                <button onClick={() => { handleDeleteRemoveObject(obj) }} className=""><X size={14} /></button>
               </div>)
             })}
           </div>
