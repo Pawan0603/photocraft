@@ -1,84 +1,84 @@
-import React from 'react'
+'use client';
+import React, { useState, useEffect } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { Button } from '../ui/button';
 import { Check, X } from 'lucide-react';
 
+const SLIDERS = [
+  { key: 'blur',          label: 'Blur Level',           min: 0, max: 2000 },
+  { key: 'blurFaces',     label: 'Blur Faces Level',     min: 0, max: 2000 },
+  { key: 'pixelate',      label: 'Pixelate Level',       min: 0, max: 200  },
+  { key: 'pixelateFaces', label: 'Pixelate Faces Level', min: 0, max: 200  },
+];
+
 const BlurMobile = ({ handleBlur, blur, blurFaces, pixelate, pixelateFaces, setShowEffectCard }) => {
-    const cancel = () => {
-        setShowEffectCard(false);
-    }
-    return (
-        <div className='mt-3'>
-            <section className='mx-4 flex flex-col gap-y-2 h-40 overflow-auto'>
-                <div>
-                    <label htmlFor='blur' className='flex flex-row justify-between text-sm font-medium text-gray-700 dark:text-gray-300'>
-                        <span>Blur Level</span>
-                        <input type='number' value={blur} className='outline-none border rounded-md w-10 px-1 appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-moz-appearance:textfield]' readOnly></input>
-                    </label>
-                    <input
-                        onChange={(e) => { handleBlur("blur", e.target.value) }}
-                        defaultValue={blur}
-                        id='blur'
-                        name='blur'
-                        type={'range'}
-                        min={0}
-                        max={2000}
-                        className='w-full outline-none'
-                    />
-                </div>
-                <div>
-                    <label htmlFor='blurFaces' className='flex flex-row justify-between text-sm font-medium text-gray-700 dark:text-gray-300'>
-                        <span>Blur Faces Level</span>
-                        <input type='number' value={blurFaces} className='outline-none border rounded-md w-10 px-1 appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-moz-appearance:textfield]' readOnly></input>
-                    </label>
-                    <input
-                        onChange={(e) => { handleBlur("blurFaces", e.target.value) }}
-                        defaultValue={blurFaces}
-                        id='blurFaces'
-                        name='blurFaces'
-                        type={'range'}
-                        min={0}
-                        max={2000}
-                        className='w-full outline-none'
-                    />
-                </div>
-                <div>
-                    <label htmlFor='pixelate' className='flex flex-row justify-between text-sm font-medium text-gray-700 dark:text-gray-300'>
-                        <span>Pixelate Level</span>
-                        <input type='number' value={pixelate} className='outline-none border rounded-md w-10 px-1 appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-moz-appearance:textfield]' readOnly></input>
-                    </label>
-                    <input
-                        onChange={(e) => { handleBlur("pixelate", e.target.value) }}
-                        defaultValue={pixelate}
-                        id='pixelate'
-                        name='pixelate' type={'range'}
-                        min={0} max={200}
-                        className='w-full outline-none' />
-                </div>
-                <div>
-                    <label htmlFor='pixelateFaces' className='flex flex-row justify-between text-sm font-medium text-gray-700 dark:text-gray-300'>
-                        <span>Pixelate Faces Level</span>
-                        <input type='number' value={pixelateFaces} className='outline-none border rounded-md w-10 px-1 appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-moz-appearance:textfield]' readOnly></input>
-                    </label>
-                    <input
-                        onChange={(e) => { handleBlur("pixelateFaces", e.target.value) }}
-                        defaultValue={pixelateFaces}
-                        id='pixelateFaces'
-                        name='pixelateFaces'
-                        type={'range'}
-                        min={0}
-                        max={200}
-                        className='w-full outline-none'
-                    />
-                </div>
-            </section>
+  const [localValues, setLocalValues] = useState({ blur, blurFaces, pixelate, pixelateFaces });
 
-            <section className='flex flex-row justify-between items-center mt-4'>
-                <Button variant="outline" onClick={cancel}><X /></Button>
-                <div>Blur</div>
-                <Button variant="outline" onClick={() => { setShowEffectCard(false) }}><Check /></Button>
-            </section>
-        </div>
-    )
-}
+  useEffect(() => {
+    setLocalValues({ blur, blurFaces, pixelate, pixelateFaces });
+  }, [blur, blurFaces, pixelate, pixelateFaces]);
 
-export default BlurMobile
+  const debouncedUpdate = useDebouncedCallback((key, value) => {
+    handleBlur(key, Number(value));
+  }, 400);
+
+  const handleChange = (key, value) => {
+    setLocalValues(prev => ({ ...prev, [key]: value }));
+    debouncedUpdate(key, value);
+  };
+
+  const handleCancel = () => {
+    debouncedUpdate.cancel();
+    setLocalValues({ blur, blurFaces, pixelate, pixelateFaces });
+    setShowEffectCard(false);
+  };
+
+  const handleConfirm = () => {
+    debouncedUpdate.flush();
+    setShowEffectCard(false);
+  };
+
+  return (
+    <div className='mt-3'>
+      <section className='mx-4 flex flex-col gap-y-2 h-40 overflow-auto'>
+        {SLIDERS.map(({ key, label, min, max }) => (
+          <div key={key}>
+            <label
+              htmlFor={key}
+              className='flex flex-row justify-between text-sm font-medium text-gray-700 dark:text-gray-300'
+            >
+              <span>{label}</span>
+              <input
+                type='number'
+                value={localValues[key]}
+                readOnly
+                className='outline-none border rounded-md w-10 px-1 appearance-none
+                  [&::-webkit-inner-spin-button]:appearance-none
+                  [&::-webkit-outer-spin-button]:appearance-none'
+              />
+            </label>
+            <input
+              id={key}
+              name={key}
+              type='range'
+              min={min}
+              max={max}
+              step={1}
+              value={localValues[key]}
+              onChange={(e) => handleChange(key, e.target.value)}
+              className='w-full outline-none'
+            />
+          </div>
+        ))}
+      </section>
+
+      <section className='flex flex-row justify-between items-center mt-4'>
+        <Button variant="outline" onClick={handleCancel}><X /></Button>
+        <div>Blur</div>
+        <Button variant="outline" onClick={handleConfirm}><Check /></Button>
+      </section>
+    </div>
+  );
+};
+
+export default BlurMobile;
