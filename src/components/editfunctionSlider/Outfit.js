@@ -29,7 +29,7 @@ export default function Outfit({ outfitChange, outfitRestore, outfit }) {
 
     { name: "Dress", for: ["women"] },
     { name: "Skirt", for: ["women"] },
-    { name: "Blouse", for: ["women"] },
+    // { name: "Blouse", for: ["women"] },
     { name: "Tank Top", for: ["women"] },
     { name: "Cardigan", for: ["women"] },
     { name: "Leggings", for: ["women"] },
@@ -40,15 +40,15 @@ export default function Outfit({ outfitChange, outfitRestore, outfit }) {
     { name: "Kurti", for: ["women"] },
     { name: "Saree", for: ["women"] },
 
-    { name: "Bikini", for: ["women"] },
-    { name: "Monokini", for: ["women"] },
-    { name: "Tankini", for: ["women"] },
-    { name: "Trikini", for: ["women"] },
-    { name: "Bandeaukini", for: ["women"] },
-    { name: "Microkini", for: ["women"] },
-    { name: "Sling Bikini", for: ["women"] },
-    { name: "String Bikini", for: ["women"] },
-    { name: "High-Waisted Bikini", for: ["women"] }
+    // { name: "Bikini", for: ["women"] },
+    // { name: "Monokini", for: ["women"] },
+    // { name: "Tankini", for: ["women"] },
+    // { name: "Trikini", for: ["women"] },
+    // { name: "Bandeaukini", for: ["women"] },
+    // { name: "Microkini", for: ["women"] },
+    // { name: "Sling Bikini", for: ["women"] },
+    // { name: "String Bikini", for: ["women"] },
+    // { name: "High-Waisted Bikini", for: ["women"] }
   ];
 
 
